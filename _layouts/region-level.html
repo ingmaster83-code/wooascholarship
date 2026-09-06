@@ -1,0 +1,61 @@
+---
+layout: default
+---
+<div class="hero" style="padding:40px 20px 32px;">
+  <h1 style="font-size:1.6rem;">{{ page.sidoName }} {{ page.levelLabel }}<br><span class="accent">장학금 {{ page.totalCount }}건</span></h1>
+</div>
+
+<div class="breadcrumb">
+  <a href="{{ '/' | relative_url }}">홈</a> ›
+  <a href="{{ '/region/' | relative_url }}{{ page.sidoSlug }}/">{{ page.sidoName }}</a> ›
+  <span>{{ page.levelLabel }}</span>
+</div>
+
+<div class="section">
+  <div class="level-tabs">
+    <a class="tab-btn {% if page.level == 'university' %}active{% endif %}" href="{{ '/region/' | relative_url }}{{ page.sidoSlug }}/university/">🎓 대학생</a>
+    <a class="tab-btn {% if page.level == 'highschool' %}active{% endif %}" href="{{ '/region/' | relative_url }}{{ page.sidoSlug }}/highschool/">📚 고등학생</a>
+  </div>
+
+  <div class="filter-bar">
+    <input type="text" class="filter-input" id="schFilter" placeholder="🔍 장학금·운영기관 이름으로 찾기">
+  </div>
+
+  <div class="ad-slot" style="margin:0 0 20px;text-align:center;">{% include ad.html %}</div>
+
+  <div class="sch-grid" id="schGrid">
+    {% for it in page.items %}
+    <a class="sch-card" data-name="{{ it.productNm }} {{ it.orgNm }}" href="{{ '/scholarship/' | relative_url }}{{ it.slug }}/">
+      <div class="sch-card-org">{{ it.orgNm }}</div>
+      <div class="sch-card-name">{{ it.productNm }}</div>
+      {% if it.supportDetail != "" %}<div class="sch-card-amount">{{ it.supportDetail | remove: '○' | truncate: 50 }}</div>{% endif %}
+      <div class="sch-card-meta">
+        {% if it.status == 'open' %}<span class="badge badge-open">모집중</span>
+        {% elsif it.status == 'upcoming' %}<span class="badge badge-upcoming">모집예정</span>
+        {% elsif it.status == 'closed' %}<span class="badge badge-closed">모집마감</span>
+        {% else %}<span class="badge badge-unknown">상시·미정</span>{% endif %}
+        {% if it.endDate != "" %}<span>~{{ it.endDate }}</span>{% endif %}
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+  <p id="noResult" style="display:none;text-align:center;color:var(--text-muted);padding:30px 0;">검색 결과가 없어요.</p>
+</div>
+
+<script>
+(function(){
+  var input = document.getElementById('schFilter');
+  var cards = document.querySelectorAll('#schGrid .sch-card');
+  var noResult = document.getElementById('noResult');
+  input.addEventListener('input', function(){
+    var q = input.value.trim().toLowerCase();
+    var visible = 0;
+    cards.forEach(function(c){
+      var match = c.getAttribute('data-name').toLowerCase().indexOf(q) !== -1;
+      c.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+    noResult.style.display = visible === 0 ? 'block' : 'none';
+  });
+})();
+</script>

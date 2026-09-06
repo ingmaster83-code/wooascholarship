@@ -1,0 +1,33 @@
+---
+layout: default
+---
+<div class="hero" style="padding:40px 20px 32px;">
+  <h1 style="font-size:1.6rem;">전국 {{ page.levelLabel }}<br><span class="accent">장학금 {{ page.totalCount }}건</span></h1>
+  <p>지역을 선택하면 해당 지역 {{ page.levelLabel }} 장학금 목록을 볼 수 있어요.</p>
+</div>
+
+<div class="breadcrumb">
+  <a href="{{ '/' | relative_url }}">홈</a> ›
+  <span>{{ page.levelLabel }} 장학금</span>
+</div>
+
+<div class="section">
+  <div class="level-tabs">
+    <a class="tab-btn {% if page.level == 'university' %}active{% endif %}" href="{{ '/university/' | relative_url }}">🎓 대학생</a>
+    <a class="tab-btn {% if page.level == 'highschool' %}active{% endif %}" href="{{ '/highschool/' | relative_url }}">📚 고등학생</a>
+  </div>
+
+  <div class="ad-slot" style="margin:0 0 20px;text-align:center;">{% include ad.html %}</div>
+
+  <div class="region-grid">
+    {% for r in page.regionRows %}
+    {% if r.count > 0 %}
+    <a class="region-btn" href="{{ '/region/' | relative_url }}{{ r.slug }}/{{ page.level }}/">
+      <span class="region-icon">📍</span>
+      {{ r.name | remove: '특별자치시' | remove: '특별자치도' | remove: '광역시' | remove: '특별시' | remove: '(지역무관)' }}
+      <div class="region-count">{{ r.count }}건</div>
+    </a>
+    {% endif %}
+    {% endfor %}
+  </div>
+</div>

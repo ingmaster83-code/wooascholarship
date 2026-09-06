@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://wooascholarship.wooahouse.com/sitemap.xml

@@ -1,0 +1,31 @@
+---
+layout: default
+---
+<div class="hero" style="padding:40px 20px 32px;">
+  <h1 style="font-size:1.6rem;">{{ page.sidoName }}<br><span class="accent">대학생·고등학생 장학금</span></h1>
+  <p>총 {{ page.universityCount | plus: page.highschoolCount }}건의 장학금 정보</p>
+</div>
+
+<div class="breadcrumb">
+  <a href="{{ '/' | relative_url }}">홈</a> ›
+  <span>{{ page.sidoName }}</span>
+</div>
+
+<div class="section">
+  <div class="sch-grid">
+    <a class="sch-card" href="{{ '/region/' | relative_url }}{{ page.sidoSlug }}/university/">
+      <div class="sch-card-name">🎓 대학생 장학금</div>
+      <div class="sch-card-amount">{{ page.sidoName }} 대학생 대상 장학금 {{ page.universityCount }}건</div>
+      <div class="sch-card-meta"><span class="badge badge-open">목록 보기 →</span></div>
+    </a>
+    <a class="sch-card" href="{{ '/region/' | relative_url }}{{ page.sidoSlug }}/highschool/">
+      <div class="sch-card-name">📚 고등학생 장학금</div>
+      <div class="sch-card-amount">{{ page.sidoName }} 고등학생 대상 장학금 {{ page.highschoolCount }}건</div>
+      <div class="sch-card-meta"><span class="badge badge-open">목록 보기 →</span></div>
+    </a>
+  </div>
+
+  <div class="notice-box" style="margin-top:20px;">
+    💡 대부분의 지자체 장학금은 본인 또는 부모가 해당 지역에 주소를 두고 일정 기간 이상 거주해야 신청할 수 있어요. 신청 전 거주기간·주소 요건을 꼭 확인하세요.
+  </div>
+</div>

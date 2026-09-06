@@ -1,0 +1,104 @@
+---
+layout: default
+---
+<div class="sch-hero">
+  <div class="b-org">{{ page.orgNm }}</div>
+  <div class="b-name">{{ page.productNm }}</div>
+  {% if page.status == 'open' %}<span class="b-badge">🟢 모집중</span>
+  {% elsif page.status == 'upcoming' %}<span class="b-badge">🔵 모집예정</span>
+  {% elsif page.status == 'closed' %}<span class="b-badge">⚪ 모집마감</span>
+  {% else %}<span class="b-badge">🟡 상시·미정</span>{% endif %}
+  {% if page.sido != "" %}<span class="b-badge">📍 {{ page.sido }}</span>{% endif %}
+  <span class="b-badge">{% if page.targetLevel == 'university' %}🎓 대학생{% else %}📚 고등학생{% endif %}</span>
+</div>
+
+<div class="breadcrumb">
+  <a href="{{ '/' | relative_url }}">홈</a> ›
+  {% if page.sido != "" %}<a href="{{ '/region/' | relative_url }}{{ page.sidoSlug }}/">{{ page.sido }}</a> ›{% else %}<a href="{{ '/region/nationwide/' | relative_url }}">전국</a> ›{% endif %}
+  <span>{{ page.productNm }}</span>
+</div>
+
+<div class="page-with-sidebar" style="margin-top:20px;">
+<div>
+
+  <div class="info-panel">
+    <h2>💰 지원 내용</h2>
+    {% if page.supportDetail != "" %}<p style="white-space:pre-line;">{{ page.supportDetail | remove: '○' }}</p>{% else %}<p class="pending-box">지원금액 정보가 공고문에 명시되지 않았어요. 홈페이지에서 확인하세요.</p>{% endif %}
+
+    <div class="spec-grid" style="margin-top:16px;">
+      <div class="spec-item"><div class="spec-label">구분</div><div class="spec-value">{{ page.productType | default: "-" }}</div></div>
+      {% if page.fundType != "" %}<div class="spec-item"><div class="spec-label">유형</div><div class="spec-value">{{ page.fundType }}</div></div>{% endif %}
+      {% if page.schoolType != "" %}<div class="spec-item"><div class="spec-label">대상 학교</div><div class="spec-value">{{ page.schoolType }}</div></div>{% endif %}
+      {% if page.gradeType != "" %}<div class="spec-item"><div class="spec-label">대상 학년</div><div class="spec-value">{{ page.gradeType }}</div></div>{% endif %}
+      {% if page.majorType != "" %}<div class="spec-item"><div class="spec-label">대상 학과</div><div class="spec-value">{{ page.majorType }}</div></div>{% endif %}
+      {% if page.selectCount != "" %}<div class="spec-item"><div class="spec-label">선발인원</div><div class="spec-value">{{ page.selectCount | remove: '○' }}</div></div>{% endif %}
+    </div>
+
+    {% if page.startDate != "" and page.endDate != "" %}
+    <p style="margin-top:14px;font-size:.9rem;color:var(--text-muted);">📅 신청기간: {{ page.startDate }} ~ {{ page.endDate }}</p>
+    {% endif %}
+  </div>
+
+  <div class="ad-slot" style="margin:20px 0;text-align:center;">{% include ad.html %}</div>
+
+  {% if page.gradeCriteria != "" %}
+  <div class="detail-block"><h3>📈 성적 기준</h3><p>{{ page.gradeCriteria | remove: '○' }}</p></div>
+  {% endif %}
+  {% if page.incomeCriteria != "" %}
+  <div class="detail-block"><h3>💵 소득 기준</h3><p>{{ page.incomeCriteria | remove: '○' }}</p></div>
+  {% endif %}
+  {% if page.regionCriteria != "" %}
+  <div class="detail-block"><h3>📍 지역·거주 요건</h3><p>{{ page.regionCriteria | remove: '○' }}</p></div>
+  {% endif %}
+  {% if page.qualCriteria != "" %}
+  <div class="detail-block"><h3>✅ 신청 자격</h3><p>{{ page.qualCriteria | remove: '○' }}</p></div>
+  {% endif %}
+  {% if page.selectMethod != "" %}
+  <div class="detail-block"><h3>🗳️ 선발 방법</h3><p>{{ page.selectMethod | remove: '○' }}</p></div>
+  {% endif %}
+  {% if page.restrictions != "" %}
+  <div class="detail-block"><h3>🚫 제외·자격제한</h3><p>{{ page.restrictions | remove: '○' }}</p></div>
+  {% endif %}
+  {% if page.recommendNeeded != "" %}
+  <div class="detail-block"><h3>✍️ 추천 필요 여부</h3><p>{{ page.recommendNeeded | remove: '○' }}</p></div>
+  {% endif %}
+  {% if page.docsNeeded != "" %}
+  <div class="detail-block"><h3>📎 제출 서류</h3><p>{{ page.docsNeeded | remove: '○' }}</p></div>
+  {% endif %}
+
+  {% if page.homepageUrl != "" %}
+  <p style="margin:20px 0;text-align:center;"><a class="btn-call" href="{{ page.homepageUrl }}" target="_blank" rel="noopener">🔗 {{ page.orgNm }} 홈페이지에서 신청하기</a></p>
+  {% endif %}
+
+  <div class="notice-box">
+    💡 이 페이지는 한국장학재단 공공데이터(운영기관이 수기로 등록한 공고 정보) 기준입니다. 신청기간·자격요건·지원금액은 변경될 수 있으니, 신청 전 반드시 운영기관 홈페이지나 공고문 원문을 다시 확인하세요.
+  </div>
+
+  <div class="tips-panel">
+    <h3>💡 Tips</h3>
+    <ul>
+      <li>같은 학기에 여러 장학금을 중복 신청할 수 없는 경우가 많으니 "자격제한" 항목을 꼭 확인하세요.</li>
+      <li>지자체 장학금은 대부분 본인 또는 부모의 주소지 거주기간 요건이 있어요.</li>
+      <li>모집기간이 짧은 경우가 많으니 신청 마감일을 미리 캘린더에 표시해두세요.</li>
+    </ul>
+  </div>
+
+  <div class="faq-section">
+    <h2>자주 묻는 질문</h2>
+    <details>
+      <summary>여기서 바로 신청할 수 있나요?</summary>
+      <p>아니요. 우아장학금은 정보 제공만 하며, 실제 신청은 각 운영기관 홈페이지 또는 공고문에 안내된 방법으로 진행해야 합니다.</p>
+    </details>
+    <details>
+      <summary>정보가 실제 공고와 다를 수 있나요?</summary>
+      <p>네. 이 데이터는 한국장학재단이 운영기관으로부터 수기로 수집한 자료라 최신 공고와 차이가 있을 수 있습니다. 신청 전 원문을 꼭 확인하세요.</p>
+    </details>
+    <details>
+      <summary>파일이나 개인정보가 서버에 저장되나요?</summary>
+      <p>아니요. 우아장학금은 별도의 개인정보를 수집하지 않으며, 모든 정보는 공개된 공공데이터를 그대로 보여줍니다.</p>
+    </details>
+  </div>
+
+</div>
+<aside class="tool-sidebar"></aside>
+</div>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if page.title %}{{ page.title }} | 우아장학금{% else %}우아장학금 - 전국 대학생·고등학생 장학금 검색{% endif %}</title>
+  <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+  <link rel="canonical" href="{{ page.url | absolute_url }}">
+  <meta name="naver-site-verification" content="fefefacb002b473da6da393586d2a7d5c54b4202" />
+
+  {% if page.layout == 'scholarship' or page.layout == 'region-level' or page.layout == 'region' %}
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="{{ page.title }} | 우아장학금">
+  <meta property="og:description" content="{{ page.description }}">
+  {% else %}
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{% if page.title %}{{ page.title }} | 우아장학금{% else %}우아장학금 - 전국 대학생·고등학생 장학금 검색{% endif %}">
+  <meta property="og:description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+  {% endif %}
+  <meta property="og:image" content="{{ '/assets/og-image.png' | absolute_url }}">
+  <meta property="og:url" content="{{ page.url | absolute_url }}">
+  <meta property="og:site_name" content="우아장학금">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9ZGENFSXWC"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-9ZGENFSXWC');</script>
+
+  <!-- AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6464921081676309" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="{{ '/' | relative_url }}" class="site-logo">
+      <span class="logo-icon">🎓</span>
+      <span class="logo-text">우아장학금</span>
+    </a>
+    <nav class="header-nav">
+      <a href="{{ '/university/' | relative_url }}">대학생 장학금</a>
+      <a href="{{ '/highschool/' | relative_url }}">고등학생 장학금</a>
+      <a href="{{ '/' | relative_url }}#search">검색</a>
+      <a href="https://wooahouse.com">WooaHouse →</a>
+    </nav>
+  </div>
+</header>
+
+<script src="{{ '/assets/js/wooa-sites-bar.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/ad-dev-placeholder.js' | relative_url }}"></script>
+
+{% unless page.url == '/' %}
+<div class="top-ad-bar">
+  {% include ad.html %}
+</div>
+{% endunless %}
+
+<main class="site-main">
+  {{ content }}
+</main>
+<script src="{{ '/assets/js/wooa-sidebar.js' | relative_url }}"></script>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p class="footer-disclaimer">
+      본 정보는 한국장학재단이 공공데이터포털에 제공하는 학자금지원정보를 기반으로 하며, 재단·지자체·민간재단이 수기로 등록한 자료라 전체 기관 정보를 포함하지 않을 수 있습니다.<br>
+      신청 자격·기간·금액 등 자세한 내용은 반드시 운영기관 홈페이지 또는 공고문을 통해 다시 한 번 확인하세요.
+    </p>
+    <p class="footer-links">
+      <a href="https://wooahouse.com">WooaHouse</a> ·
+      <a href="{{ '/privacy/' | relative_url }}">개인정보처리방침</a>
+    </p>
+    <p class="copyright">&copy; 2026 우아장학금 · WooaHouse. All rights reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>

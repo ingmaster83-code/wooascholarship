@@ -1,0 +1,30 @@
+title: 우아장학금 - 전국 대학생·고등학생 장학금 검색
+description: >-
+  전국 지자체·민간재단·대학의 대학생·고등학생 장학금 3,000여 건을 지역별로
+  검색하고, 신청기간·지원금액·자격조건을 한눈에 확인하세요.
+url: "https://wooascholarship.wooahouse.com"
+baseurl: ""
+lang: ko
+timezone: Asia/Seoul
+author: WooaHouse
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+
+plugins:
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - scripts/
+  - "*.py"
+  - "*.log"
+  - "*.txt"
+  - README.md
+  - .gitignore
+  - vendor/
+  - .env
