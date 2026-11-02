@@ -192,6 +192,61 @@ module Jekyll
     end
   end
 
+  # ── 옛 주소 → 현재 주소 안내 페이지 ─────────────────────────
+  # 2026-09-21, 2026-10-26 갱신에서 상세 페이지 주소가 한꺼번에 바뀌어 검색엔진이 색인한 주소가 404가 됐다.
+  # GitHub Pages는 301을 못 쓰므로 meta refresh + canonical 로 현재 주소를 알려준다(사이트맵에는 넣지 않음).
+  # _rawdata/old_slugs.json = { 옛주소 => [학교급, 기관명, 상품명] } (scripts/seed_slug_registry.py 가 생성)
+  class SlugRedirectGenerator < Generator
+    safe true
+    priority :low
+
+    def generate(site)
+      path = File.join(SchUtil.rawdata_dir(site), 'old_slugs.json')
+      return unless File.exist?(path)
+
+      old = JSON.parse(File.read(path, encoding: 'utf-8'))
+      items = site.data['scholarship_all'] || []
+      by_key = {}
+      live = {}
+      items.each do |it|
+        by_key[[it['targetLevel'], it['orgNm'], it['productNm']].join("\t")] ||= it['slug']
+        live[it['slug']] = true
+      end
+
+      made = 0
+      old.each do |slug, k|
+        next if live[slug]
+        target = by_key[k.join("\t")]
+        next unless target
+        site.pages << SlugRedirectPage.new(site, slug, target)
+        made += 1
+      end
+      Jekyll.logger.info "ScholarshipGenerator:", "옛 주소 안내 페이지 #{made}개 생성 (옛 주소 #{old.size}개 중)"
+    end
+  end
+
+  class SlugRedirectPage < Page
+    def initialize(site, old_slug, new_slug)
+      @site = site
+      @base = site.source
+      @dir  = "scholarship/#{old_slug}"
+      @name = 'index.html'
+      self.process(@name)
+      self.data = { 'sitemap' => false }
+      dest = "#{site.config['url']}/scholarship/#{new_slug}/"
+      path = "/scholarship/#{new_slug}/"
+      self.content = <<~HTML
+        <!DOCTYPE html>
+        <html lang="ko"><head><meta charset="utf-8">
+        <title>페이지가 이동했습니다 | 우아장학금</title>
+        <link rel="canonical" href="#{dest}">
+        <meta http-equiv="refresh" content="0; url=#{path}">
+        <script>location.replace("#{path}");</script>
+        </head><body><p><a href="#{path}">장학금 상세 페이지로 이동</a></p></body></html>
+      HTML
+    end
+  end
+
   class ScholarshipPage < Page
     def initialize(site, it)
       @site = site

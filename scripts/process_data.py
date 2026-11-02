@@ -220,6 +220,43 @@ def normalize(row, idx, target_level):
     }
 
 
+REGISTRY_PATH = os.path.join(RAW_DIR, "slug_registry.json")
+
+
+def assign_stable_slugs(items):
+    """상세 페이지 주소를 (학교급, 기관명, 상품명)에 고정한다.
+
+    예전에는 원본 데이터의 행 번호(idx)가 해시에 들어가서, 매달 새 스냅샷으로 행 순서가 바뀌면
+    거의 모든 주소가 바뀌어 검색엔진이 색인한 주소가 404가 됐다(2026-09-21, 2026-10-26 두 번).
+    한 번 부여한 주소는 slug_registry.json에 영구 보관하고, 사라졌다 다시 나타나도 같은 주소를 쓴다.
+    """
+    registry = {}
+    if os.path.exists(REGISTRY_PATH):
+        registry = json.load(open(REGISTRY_PATH, encoding="utf-8"))
+    used = set(registry.values())
+    seen = {}
+    new = 0
+    for it in items:
+        k = (it["targetLevel"], it["orgNm"], it["productNm"])
+        n = seen.get(k, 0)
+        seen[k] = n + 1
+        rk = "\t".join(k) + "\t%d" % n
+        if rk not in registry:
+            salt = 0
+            while True:
+                s = hashlib.md5(("v2|%s|%d" % (rk, salt)).encode("utf-8")).hexdigest()[:12]
+                if s not in used:
+                    break
+                salt += 1
+            registry[rk] = s
+            used.add(s)
+            new += 1
+        it["slug"] = registry[rk]
+    with open(REGISTRY_PATH, "w", encoding="utf-8") as f:
+        json.dump(registry, f, ensure_ascii=False, sort_keys=True)
+    print(f"주소 고정: 기존 {len(items) - new}건 유지 / 신규 {new}건 부여 (레지스트리 {len(registry)}건)")
+
+
 def main():
     all_items = []
 
@@ -232,6 +269,8 @@ def main():
         for i, row in enumerate(rows):
             all_items.append(normalize(row, i, target_level))
         print(f"{target_level}: {len(rows)}건 처리")
+
+    assign_stable_slugs(all_items)
 
     # 지역별 집계
     by_sido = {}
